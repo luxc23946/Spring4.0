@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- 通过p命名空间为bean的属性赋值 ,需要先导入p命名空间  -->
+<bean id="address" class="hpe.lxc.spring.beans.autowire.Address" p:city="BeiJing" p:street="HuiLongGuan" />
+<bean id="car" class="hpe.lxc.spring.beans.autowire.Car" p:brand="Ford" p:price="300000.00" />
+<bean id="person" class="hpe.lxc.spring.beans.autowire.Person" p:name="Tom" p:car-ref="car" p:address-ref="address" />
+
+<!-- 自动装配  开发中很少使用  
+        byName:根据bean的名字和当前bean的 setter风格的属性名进行自动装配 
+              若有匹配的则装配 若没有匹配的则不装配 为null
+        byType:根据bean的类型和当前bean的属性的类进行自动装配	
+             若当前IOC容器中有多个类型匹配的ben,则抛异常
+                     
+-->
+<bean id="person2" class="hpe.lxc.spring.beans.autowire.Person" p:name="Tom" autowire="byName"/>
+</beans>

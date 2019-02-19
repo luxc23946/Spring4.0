@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+   
+    <!-- 1 创建目标类 -->
+	<bean id="arithmeticCalculator" class="hpe.lxc.spring.beans.aop_aopalliance.ArithmeticCalculatorImpl"/>
+	<!-- 2 创建切面类（通知） -->
+	<bean id="loggingAspect" class="hpe.lxc.spring.beans.aop_aopalliance.LoggingAspect"/>
+	<!-- 3 aop编程 
+		3.1 导入命名空间
+		3.2 使用 <aop:config>进行配置
+				proxy-target-class="true" 声明时使用cglib代理
+			<aop:pointcut> 切入点 ，从目标对象获得具体方法
+			<aop:advisor> 特殊的切面，只有一个通知 和 一个切入点
+				advice-ref 通知引用
+				pointcut-ref 切入点引用
+		
+	-->
+	<aop:config proxy-target-class="false">
+		<aop:pointcut expression="execution(* hpe.lxc.spring.beans.aop_aopalliance.ArithmeticCalculatorImpl.*(..))" id="myPointCut"/>
+		<aop:advisor advice-ref="loggingAspect" pointcut-ref="myPointCut"/>
+	</aop:config>
+
+</beans>

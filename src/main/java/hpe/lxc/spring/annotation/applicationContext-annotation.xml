@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+		
+		<!-- 指定spring IOC容器扫描指定的包 -->
+		<!-- 
+		   resource-pattern:指定扫描的资源 resource-pattern="repository/*.class"
+		   context:exclude-filte:子节点指定排除哪些指定表达式的组件
+		   context:include-filter:子节点指定包含哪些表达式的组件,该子节点 需要指定  use-default-filters="false"
+		   use-default-filters:  true/false 指定是否使用默认的表达式组件
+		 -->
+    <context:component-scan base-package="hpe.lxc.spring.annotation" resource-pattern="*.class" use-default-filters="true" >
+      
+       <!-- 排除那些被@Repository注解的类  -->
+       <!--  
+       <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+       -->
+       
+       <!-- 只包含那些被@Repository注解的类  -->
+       <!--  
+       <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+       -->
+       
+       <!--不包含此接口及此接口实现类  -->
+       <!--  
+       <context:exclude-filter type="assignable" expression="hpe.lxc.spring.beans.annotation.repository.UserRepository"/>
+       -->
+       
+       <!-- 只包含此接口及此接口的实现类 该子节点 需要指定  use-default-filters="false"-->
+       <!--  
+       <context:include-filter type="assignable" expression="hpe.lxc.spring.beans.annotation.repository.UserRepository"/>
+       -->
+    </context:component-scan>
+</beans>

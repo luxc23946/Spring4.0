@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean id="car" class="hpe.lxc.spring.beans.cycle.Car" init-method="init" destroy-method="destory">
+  <property name="brand" value="Audi"/>
+</bean>
+
+<!-- 实现 BeanPostProcessor接口-->
+<!-- 配置bean的后置处理器  不需要配置ID,由IOC容器自动识别该bean是一个后置处理器-->
+<!-- 
+  postProcessBeforeInitialization    init-method之前调用
+
+  postProcessAfterInitialization     init-method之后调用
+ -->
+<bean class="hpe.lxc.spring.beans.cycle.MyBeanPostProcessor"/>
+
+</beans>

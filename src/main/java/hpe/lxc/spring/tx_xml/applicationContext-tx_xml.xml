@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+<!-- 导入资源文件 -->
+<context:property-placeholder location="classpath:dbcp.properties"/>
+
+<!-- 配置cspo数据源 -->
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+   <property name="user" value="${jdbc.user}"/>
+   <property name="password" value="${jdbc.password}"/>
+   <property name="jdbcUrl" value="${jdbc.jdbcUrl}"/>
+   <property name="driverClass" value="${jdbc.driverClass}"/>
+   <property name="initialPoolSize" value="${jdbc.initPoolSize}"/>
+   <property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
+</bean>
+
+
+<!-- 1.配置bean -->
+<bean id="bookShopDao" class="hpe.lxc.spring.tx_xml.BookShopDaoImpl">
+   <property name="dataSource" ref="dataSource"/>
+</bean>
+<bean id="bookShopService" class="hpe.lxc.spring.tx_xml.BookShopServiceImpl">
+   <property name="bookShopDao" ref="bookShopDao"/>
+</bean>
+<bean id="cashier" class="hpe.lxc.spring.tx_xml.CashierImpl">
+  <property name="bookShopService" ref="bookShopService"/>
+</bean>
+
+<!-- 
+   配置Spring的jdbcTemplate模板类 
+   当dao层继承JdbcDaoSupport类时，可以不用为dao层注入jdbcTemplate
+   只需向dao层注入数据源即可，JdbcDaoSupport类可以根据数据源自动为
+   dao层创建jdbcTemplate()
+-->
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" >
+  <property name="dataSource" ref="dataSource"/>
+</bean>
+
+<!-- Spring声明式事务 -->
+
+<!-- 2.配置事务管理器 -->
+<bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+   <property name="dataSource" ref="dataSource" />
+</bean>
+
+<!-- 3.配置事务属性 -->
+<tx:advice id="txAd" transaction-manager="dataSourceTransactionManager">
+  <tx:attributes>
+     <tx:method name="purchase" isolation="DEFAULT"  propagation="REQUIRED" timeout="-1"/>
+     <tx:method name="checkOut" isolation="DEFAULT"  propagation="REQUIRED" timeout="-1"/>
+     <tx:method name="get*" read-only="true"/>
+     <tx:method name="find*" read-only="true"/>
+  </tx:attributes>
+</tx:advice>
+
+<!-- 4.配置事务切入点以及把事务切入点和属性关联起来 -->
+<aop:config>
+  <aop:pointcut expression="execution(* hpe.lxc.spring.tx_xml.*.*(..))" id="txPoint"/>
+  <aop:advisor advice-ref="txAd" pointcut-ref="txPoint"/>
+</aop:config>
+
+</beans>

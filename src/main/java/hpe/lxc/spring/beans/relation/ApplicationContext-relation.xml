@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- 
+   抽象bean：bean的abstract属性为true的bean,这样的bean不能被IOC容器实例化,只能用来被继承配置 
+               若某一个bean的class属性没有被指定,则该bean必须为一个抽象bean
+-->
+<bean id="address"  p:city="BeiJing" p:street="WuDaoKou" abstract="true"/>
+<bean id="address1" class="hpe.lxc.spring.beans.relation.Address" parent="address" />
+
+<!-- bean配置的继承:使用Parent属性指定继承哪个bean的属性  子bean也可以覆盖父bean的属性 -->
+<bean id="address2" parent="address1" p:street="DaZhongSi"/>
+
+<bean id="car" class="hpe.lxc.spring.beans.relation.Car" p:brand="Audi" p:price="300000"/>
+
+<!-- 依赖:dependsOn 若IOC容器中没有依赖的对象 则创建该对象时出错 -->
+<bean id="person" class="hpe.lxc.spring.beans.relation.Person" p:name="Tom" p:address-ref="address1" p:car-ref="car" depends-on="car"/>
+
+</beans>

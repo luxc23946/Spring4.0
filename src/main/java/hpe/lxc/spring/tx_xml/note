@@ -1,0 +1,8 @@
+1.Spring的声明式事务
+  1).在配置文件中配置事务管理器
+      <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+         <property name="dataSource" ref="dataSource"></property>
+      </bean>
+  2).在配置文件中启用事务注解
+     <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
+  3).在需要开启事务的方法上添加 @Transactional注解

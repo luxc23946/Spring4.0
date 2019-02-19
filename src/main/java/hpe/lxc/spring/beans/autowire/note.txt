@@ -1,0 +1,4 @@
+
+ autowire 自动装配
+   byType:根据类型自动装配
+   byName:根据名字自动装配

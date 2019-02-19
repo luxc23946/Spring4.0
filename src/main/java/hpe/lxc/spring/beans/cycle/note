@@ -1,0 +1,11 @@
+
+bean的生命周期
+
+BeanPostProcessor  bean后置处理器
+	通过构造器或工厂方法创建 Bean 实例
+	为 Bean 的属性设置值和对其他 Bean 的引用
+	postProcessBeforeInitialization
+	调用 Bean 的初始化方法     (init-method)
+	postProcessAfterInitialization
+	Bean 可以使用了
+	当容器关闭时, 调用 Bean的销毁方法   (destroy-method)

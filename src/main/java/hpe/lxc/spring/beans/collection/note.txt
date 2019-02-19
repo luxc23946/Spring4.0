@@ -1,0 +1,7 @@
+
+bean集合属性装配
+    List
+    Set
+    Array
+    Map
+    Properties

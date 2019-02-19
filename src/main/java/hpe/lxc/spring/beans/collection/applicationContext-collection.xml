@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+  
+  <bean id="car1" class="hpe.lxc.spring.beans.collection.Car" scope="prototype">
+     <constructor-arg value="audi" index="0" type="java.lang.String"/>
+     <constructor-arg value="998" index="1"  type="java.lang.Float"/>
+     <property name="speed" value="500" />
+  </bean>
+  
+  
+  <bean id="car2" class="hpe.lxc.spring.beans.collection.Car" scope="prototype">
+     <constructor-arg  index="0" type="java.lang.String">
+        <value><![CDATA[<abc>]]></value>
+     </constructor-arg>
+     <constructor-arg value="998" index="1"  type="java.lang.Float"/>
+     <property name="speed" value="120"/>
+  </bean>
+  
+  
+ 
+  <bean id="person1" class="hpe.lxc.spring.beans.collection.Person">
+    <property name="name" value="Bob"/>
+    <property name="age" value="30"/>
+    
+    <!-- 数组集合 -->
+    <property name="hobbies">
+      <array>
+        <value>swimming</value>
+        <value>singing</value>
+        <value>reading</value>
+        <value>music</value>
+      </array>
+    </property>
+    
+    <property name="cars">
+       <!--使用list节点为list属性赋值 -->
+       <list>
+          <ref bean="car1"/>
+          <ref bean="car2"/>
+          <!--list内部bean -->
+          <bean class="hpe.lxc.spring.beans.collection.Car">
+             <property name="price" value="998.00" />
+             <property name="name" value="Ford"/>
+             <property name="speed" value="240"/>
+          </bean> 
+       </list>
+    </property>
+    
+    <!--set集合 -->
+    <property name="hates">
+       <set>
+         <value>running</value>
+         <value>raining</value>
+         <value>potato</value>
+         <value>basketball</value>
+       </set>
+    </property>
+    
+    <property name="carMap">
+    <!-- 配置map属性 -->
+      <map>
+       <entry key="audi" value-ref="car1"/>
+       <entry key="Ford" value-ref="car2"/>
+       <!-- map内部bean -->
+       <entry>
+         <key><value>Toyoto</value></key>
+         <bean class="hpe.lxc.spring.beans.collection.Car">
+           <constructor-arg value="Toyoto" index="0"  type="java.lang.String"/>
+           <constructor-arg value="998.00" index="1"  type="java.lang.Float"/>
+           <property name="speed" value="120"/>
+         </bean>
+       </entry>
+      </map>
+    </property>
+    
+  </bean>
+  
+  <!-- 配置单例的集合bean,以供多个ben集合进行引用,需要导入util命名空间 -->
+  <util:list id="carList">
+    <ref bean="car1"/>
+    <ref bean="car2"/>
+    <!-- 内部bean -->
+    <bean class="hpe.lxc.spring.beans.collection.Car">
+       <constructor-arg value="Ford"  index="0" type="java.lang.String"/>
+       <constructor-arg value="998" index="1"  type="java.lang.Float"/>
+       <property name="speed" value="120"/>
+    </bean>
+  </util:list>
+  
+  <!-- 配置单例的Map bean,以供多个ben集合进行引用,需要导入util命名空间 -->
+  <util:map id="carMap">
+     <entry key="audi" value-ref="car1"/>
+       <entry key="Ford" value-ref="car2"/>
+       <!-- map内部bean -->
+       <entry>
+         <key><value>Toyoto</value></key>
+         <bean class="hpe.lxc.spring.beans.collection.Car">
+           <constructor-arg value="Toyoto" index="0"  type="java.lang.String"/>
+           <constructor-arg value="998.00" index="1"  type="java.lang.Float"/>
+           <property name="speed" value="120"/>
+         </bean>
+       </entry>
+  </util:map>
+  
+  
+  <!-- 配置单例的Array bean,以供多个ben集合进行引用,需要导入util命名空间 -->
+  <util:set id="hates">
+    <value>running</value>
+    <value>raining</value>
+    <value>potato</value>
+    <value>basketball</value>
+  </util:set>
+  
+  <bean id="person2" class="hpe.lxc.spring.beans.collection.Person">
+    <property name="name" value="Bob"/>
+    <property name="age" value="30"/>
+    <property name="cars" ref="carList"/>
+    <property name="hates" ref="hates"/>
+    <property name="carMap" ref="carMap"/>
+  </bean>
+  
+  <!-- 通过p命名空间为bean的属性赋值 ,需要先导入p命名空间 -->
+  <bean id="person3" class="hpe.lxc.spring.beans.collection.Person" 
+        p:age="30" p:name="Tom" p:cars-ref="carList" p:carMap-ref="carMap" 
+        p:hates-ref="hates" />
+  
+  
+</beans>

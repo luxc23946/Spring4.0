@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+
+<!-- 配置无日志原生的bean -->
+<bean id="arithmeticCalculator" class="hpe.lxc.spring.beans.aop_aspectj.xml.ArithmeticCalculatorImpl"/>
+
+<!-- 配置切面的bean -->
+<bean id="loggingAspect" class="hpe.lxc.spring.beans.aop_aspectj.xml.LoggingAspect" />
+<bean id="validateAspect" class="hpe.lxc.spring.beans.aop_aspectj.xml.ValidateAspect" />
+
+
+
+<!-- 配置AOP -->
+<!-- 
+   proxy-target-class=false:采用jdbcProxy生成代理
+   proxy-target-class=true:采用cglib生成代理
+ -->
+<aop:config proxy-target-class="true">
+   <!-- 配置切点表达式 -->
+   <aop:pointcut expression="execution(* hpe.lxc.spring.beans.aop_aspectj.xml.ArithmeticCalculatorImpl.*(int, int))" 
+        id="pointcut"/>
+        
+   <!-- 配置日志切面及通知 -->
+   <aop:aspect ref="loggingAspect" order="2">
+      <aop:before method="beforeMethod" pointcut-ref="pointcut"/>
+      <aop:after method="afterMethod" pointcut-ref="pointcut"/>
+      <aop:after-returning method="afterReturning" pointcut-ref="pointcut" returning="result"/>
+      <aop:after-throwing method="afterThrowing" pointcut-ref="pointcut" throwing="ex"/>
+      <!--  
+      <aop:around method="aroundMethod" pointcut-ref="pointcut"/>
+      -->
+   </aop:aspect>
+   
+   <!-- 配置验证切面及通知 -->
+   <aop:aspect ref="validateAspect" order="1">
+      <aop:before method="validateArgs" pointcut-ref="pointcut"/>
+   </aop:aspect>
+   
+</aop:config>
+
+</beans>

@@ -1,0 +1,19 @@
+
+
+  基于注解的方式配置Bean
+ 基于注解来装配 Bean 的属性
+ 
+   1). context:component-scan   Spring自动扫描的包
+   
+   @Component(value="ID"): 基本注解, 标识了一个受 Spring 管理的组件    value:组建标识ID
+   @Respository(value="ID"): 标识持久层组件   value:组建标识ID
+   @Service: 标识服务层(业务层)组件
+   @Controller: 标识表现层组件
+   
+   @Scope 标识Bean的作用域 是单例还是多例
+   @Value 给Bean的属性赋基本值
+   @PostConstruct 初始化  ==InitMethod
+   @PreDestroy 销毁==DestroyMethod
+   
+   @Autowired(required=false) 自动装配     required:指定组建是否必需
+   @Qualifier(value="") 指定装配时的Bean的ID    value:指定用哪个组建装配

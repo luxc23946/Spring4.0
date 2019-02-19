@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+  
+  <bean id="helloWorld" class="hpe.lxc.spring.beans.HelloWorld" scope="prototype">
+      <property name="name" value="World"/>
+  </bean>
+  
+  <bean id="car0" class="hpe.lxc.spring.beans.Car" scope="prototype">
+     <constructor-arg name="name"  value="audi" />
+     <constructor-arg name="price" value="998"  />
+  </bean>
+  
+  <bean id="car1" class="hpe.lxc.spring.beans.Car" scope="prototype">
+     <constructor-arg  value="audi" index="0" type="java.lang.String"/>
+     <constructor-arg value="500" index="1"  type="java.lang.Integer"/>
+     <property name="price" value="998.00" />
+  </bean>
+  
+  
+  <bean id="car2" class="hpe.lxc.spring.beans.Car" scope="prototype">
+     <!-- 通过CDATA块为属性赋特殊值 -->
+     <constructor-arg  index="0" type="java.lang.String">
+        <value><![CDATA[<abc>]]></value>
+     </constructor-arg>
+     <constructor-arg value="998" index="1"  type="java.lang.Float"/>
+  </bean>
+  
+  <bean id="person1" class="hpe.lxc.spring.beans.Person" >
+     <property name="name" value="Tom"/>
+     <property name="age" value="24"/>
+     
+     <!-- 通过ref子节点或属性使bean属性指向一个非基本类型的引用类型 -->
+     <!--  
+      <property name="car">
+        <ref bean="car1"/>
+      </property>
+     -->
+     
+     <!--  
+     <property name="car" ref="car1"/>
+     -->
+     
+     <!-- 通过null 子节点为属性赋予一个null值，当不进行赋值时，属性值默认为null -->
+     <!--  
+     <property name="car" >
+       <null/>
+     </property>
+     -->
+
+     <property name="car">
+        <bean class="hpe.lxc.spring.beans.Car">
+           <constructor-arg value="audi" index="0" type="java.lang.String"/>
+           <constructor-arg value="500" index="1"  type="java.lang.Integer"/>
+           <property name="price" value="998.00" />
+        </bean>
+     </property>
+  </bean>
+  
+  
+ <bean id="person2" class="hpe.lxc.spring.beans.Person">
+   <constructor-arg value="Alice" type="java.lang.String" />
+   <constructor-arg value="23" type="java.lang.Integer"/>
+   
+   <!--  
+   <constructor-arg ref="car1" type="hpe.lxc.spring.beans.Car"/>
+   -->
+   
+   
+   <!--  
+   <constructor-arg type="hpe.lxc.spring.beans.Car">
+     <null />
+   </constructor-arg>
+   -->
+   
+   <constructor-arg type="hpe.lxc.spring.beans.Car">
+      <bean class="hpe.lxc.spring.beans.Car">
+           <constructor-arg value="audi" index="0" type="java.lang.String"/>
+           <constructor-arg value="500" index="1"  type="java.lang.Integer"/>
+           <property name="price" value="998.00" />
+      </bean>
+   </constructor-arg>
+ </bean>
+ 
+ 
+  <bean id="person3" class="hpe.lxc.spring.beans.Person">
+    <property name="name" value="Bob"/>
+    <property name="age" value="30"/>
+    <property name="car">
+       <bean class="hpe.lxc.spring.beans.Car">
+           <constructor-arg value="audi" index="0" type="java.lang.String"/>
+           <constructor-arg value="500" index="1"  type="java.lang.Integer"/>
+           <property name="price" value="998.00" />
+      </bean>
+    </property>
+    
+    <!-- 为级联属性赋值 -->
+    <property name="car.name" value="Volvo"/>
+    <property name="car.price" value="30000.0"/>
+    <property name="car.speed" value="120"/>
+ </bean>
+ 
+
+  
+</beans>

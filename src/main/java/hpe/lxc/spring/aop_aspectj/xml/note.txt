@@ -1,0 +1,19 @@
+
+通过XML配置方式AOP编程
+
+1.Spring AOP
+   1).加入jar包
+     com.springsource.org.aopalliance-1.0.0.jar
+	 com.springsource.org.aspectj.weaver-1.6.8.RELEASE.jar
+	 spring-aop-4.0.0.RELEASE.jar
+	 spring-aspects-4.0.0.RELEASE.jar
+   2).在配置文件中加入aop命名空间  xmlns:aop
+   3).基于注解的方式
+    ①在配置文件中加入如下配置   <aop:aspectj-autoproxy/>	使AspectJ注解起作用:自动为匹配的类生成代理对象
+    ②把横切关注点的代码抽象到切面的类中
+      i.切面首先是一个IOC中的bean,即加入@Component注解
+      ii.切面还需要介入@Aspect注解
+    ③在类中声明各种通知 如前置通知
+      i.声明一个方法
+      ii.在方法钱加入@Before注解
+    ④可以在通知方法中声明一个类型为JoinPonit的参数,然后就能范文链接细节,如方法名和参数值.

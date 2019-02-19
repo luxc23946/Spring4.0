@@ -1,0 +1,5 @@
+
+bean与bean之间的关系
+        继承   parent
+        依赖   deppends-on
+    前置依赖的bean会在本Bean实例化之前创建好

@@ -1,0 +1,3 @@
+   Bean的生命周期
+       singleton   单例  默认
+       prototype   多例
